@@ -13,6 +13,7 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class MemberEditComponent implements OnInit {
   user: User;
+  photoUrl: string;
 
   @ViewChild('editForm') editForm: NgForm;
   @HostListener('window:beforeunload', ['$event'])
@@ -31,6 +32,9 @@ export class MemberEditComponent implements OnInit {
   ngOnInit() {
     this.route.data.subscribe(data => {
       this.user = data['user'];
+      this.authService.currentPhotoUrl.subscribe(photoUrl => {
+        this.photoUrl = photoUrl;
+      });
     });
   }
 
@@ -42,6 +46,10 @@ export class MemberEditComponent implements OnInit {
 
     //when we reset the form, user data will remain in the fields, only sub button will
     //be disabled, otherwise all user data will be removed from fields
+  }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
   }
 
 }
