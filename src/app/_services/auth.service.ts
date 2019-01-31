@@ -15,7 +15,8 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   currentUser: User;
-  photoUrl = new BehaviorSubject<string>('../../assets/user.png');
+  photoUrl = new BehaviorSubject<string>('../../assets/tijana.png');
+
   //default image that we use if img is not provided
   currentPhotoUrl = this.photoUrl.asObservable();
 
@@ -47,8 +48,8 @@ export class AuthService {
       );
   }
 
-  register(model: any) {
-    return this.http.post(this.baseUrl + 'register', model);
+  register(user: User) {
+    return this.http.post(this.baseUrl + 'register', user);
     //nemamo response, pipe je nepotreban
   }
   loggedIn() {
