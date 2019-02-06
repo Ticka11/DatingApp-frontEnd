@@ -1,15 +1,16 @@
 import { environment } from './../../environments/environment';
-import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
+import { PaginatedResult } from '../_models/Pagination';
+import { map } from 'rxjs/operators';
 
 // const httpOptions = {
 //     headers: new HttpHeaders({
 //         'Authorization': 'Bearer ' + localStorage.getItem('token')
 //     })
-// }
-//doesn't nessessary, we added config into app.module
+// } //doesn't nessessary, we added config into app.module
 
 @Injectable({
     providedIn: 'root'
@@ -19,8 +20,36 @@ export class UserService {
     baseUrl = environment.apiUrl;
     constructor(private http: HttpClient) { }
 
-    getUsers(): Observable<User[]> {
-        return this.http.get<User[]>(this.baseUrl + 'users');
+    getUsers(page? , pageSize?, userParams?): Observable<PaginatedResult<User[]>> {
+        const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
+        //we need to create instance of it because its class
+        let params = new HttpParams();
+
+        if (page != null && pageSize != null) {
+           params = params.append('pageNumber', page);
+           params = params.append('pageSize', pageSize);
+        }
+        if (userParams != null)
+        {
+            params = params.append('minAge', userParams.minAge);
+            params = params.append('maxAge', userParams.maxAge);
+            params = params.append('gender', userParams.gender);
+            params = params.append('orderBy', userParams.orderBy);
+
+        }
+        return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params: params})
+        .pipe(
+            map(response => {
+                paginatedResult.result = response.body;
+                console.log(params.getAll('pageNumber'));
+                console.log(params.getAll('pageSize'));
+
+                if (response.headers.get('Pagination') != null) {
+                    paginatedResult.pagination = JSON.parse(response.headers.get('Pagination'));
+                }
+                return paginatedResult;
+            })
+        );
     }
 
     getUser(id): Observable<User> {
