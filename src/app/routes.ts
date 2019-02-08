@@ -10,6 +10,7 @@ import { AuthGuard } from './_guards/auth.guard';
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
+import { ListsResolver } from './_resolvers/likes.resolver';
 
 export const appRoutes: Routes = [
   { path: '', component: HomeComponent },
@@ -24,7 +25,7 @@ export const appRoutes: Routes = [
         resolve: {user: MemberEditResolver}, canDeactivate: [PreventUnsavedChanges] },
         //can not be members/edit, because after members we expect only parameter, like id
         { path: 'messages', component: MessagesComponent },
-        { path: 'lists', component: ListsComponent},
+        { path: 'lists', component: ListsComponent, resolve: {users: ListsResolver}},
       ]
   },
 //   path '' znaci '/', a djeca se nadovezuju na njega, 

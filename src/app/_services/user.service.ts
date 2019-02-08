@@ -20,7 +20,7 @@ export class UserService {
     baseUrl = environment.apiUrl;
     constructor(private http: HttpClient) { }
 
-    getUsers(page? , pageSize?, userParams?): Observable<PaginatedResult<User[]>> {
+    getUsers(page? , pageSize?, userParams?, likesParams?): Observable<PaginatedResult<User[]>> {
         const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<User[]>();
         //we need to create instance of it because its class
         let params = new HttpParams();
@@ -37,6 +37,14 @@ export class UserService {
             params = params.append('orderBy', userParams.orderBy);
 
         }
+        if (likesParams === 'Likers') {
+            params = params.append('likers', 'true');
+        }
+        if (likesParams === 'Likees') {
+            params = params.append('likees', 'true');
+        }
+
+
         return this.http.get<User[]>(this.baseUrl + 'users', {observe: 'response', params: params})
         .pipe(
             map(response => {
@@ -66,5 +74,10 @@ export class UserService {
 
     deletePhoto(userId: number, id: number) {
         return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
+    }
+
+
+    sendLike(id: number, recipientId: number) {
+        return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
     }
 }
