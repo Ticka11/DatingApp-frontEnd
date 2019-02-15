@@ -26,12 +26,12 @@
             <p>{{user.created | date:'mediumDate'}}</p>
           </div>
         </div>
-        <div class="footer">
+        <div *ngIf="currentUserId != user.id" class="footer">
           <div class="btn-group d-flex">
-            <button class="btn btn-primary w-100">
+            <button (click)="sendLike(user.id)" class="btn btn-primary w-100">
               Like
             </button>
-            <button class="btn btn-dark w-100">
+            <button (click)="selectTab(3)" class="btn btn-dark w-100">
               Message
             </button>
           </div>
@@ -41,7 +41,7 @@
     <div class="col-sm-8">
 
       <div class="tab-panel">
-        <tabset class="member-tabset">
+        <tabset class="member-tabset" #memberTabs>
           <tab heading="About {{user.knownAs}}">
             <h4>Description</h4>
             <p>{{user.introduction}}</p>
@@ -55,8 +55,8 @@
           <tab heading="Photos">
             <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
           </tab>
-          <tab heading="Messages">
-            <p>messages</p>
+          <tab id="messageTab" heading="Messages">
+            <app-member-messages [recipientId]="user.id"></app-member-messages>
           </tab>
         </tabset>
       </div>

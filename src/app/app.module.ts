@@ -1,3 +1,5 @@
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { AlertifyService } from './_services/alertify.service';
@@ -54,7 +56,8 @@ export function tokenGetter() {
       MemberDetailComponent,
       MemberEditComponent,
       PhotoEditorComponent,
-      TimeAgoPipe
+      TimeAgoPipe,
+      MemberMessagesComponent
    ],
    imports: [
       BrowserModule,
@@ -89,6 +92,7 @@ export function tokenGetter() {
       UserService,
       MemberDetailResolver,
       ListsResolver,
+      MessagesResolver,
       MemberListResolver,
       MemberEditComponent,
       PreventUnsavedChanges

@@ -15,15 +15,21 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   decodedToken: any;
   currentUser: User;
+  recipientId = new BehaviorSubject<number>(-1);
   photoUrl = new BehaviorSubject<string>('../../assets/tijana.png');
 
   //default image that we use if img is not provided
   currentPhotoUrl = this.photoUrl.asObservable();
+  currentRecipientId = this.recipientId.asObservable();
 
   constructor(private http: HttpClient) { }
 
   changeMemberPhoto(photoUrl: string) {
     this.photoUrl.next(photoUrl);
+  }
+
+  sendRecipientId(recipientId: number) {
+    this.recipientId.next(recipientId);
   }
   //when we call this method, value will be passed to this.photoUrl, and updated,
   //instead default photo

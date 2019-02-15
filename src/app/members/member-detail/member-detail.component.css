@@ -12,4 +12,7 @@
     background-color: #fff;
     border-top: none;
 }
+.messagesHidden {
+    display: none;
+}
 
