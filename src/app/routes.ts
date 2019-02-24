@@ -22,7 +22,7 @@ export const appRoutes: Routes = [
       children: [
         { path: 'members', component: MemberListComponent, resolve: {users: MemberListResolver}},
         { path: 'members/:id', component: MemberDetailComponent, resolve: {user: MemberDetailResolver}},
-        { path: 'member/edit', component: MemberEditComponent, 
+        { path: 'member/edit', component: MemberEditComponent,
         resolve: {user: MemberEditResolver}, canDeactivate: [PreventUnsavedChanges] },
         //can not be members/edit, because after members we expect only parameter, like id
         { path: 'messages', component: MessagesComponent, resolve: {messages: MessagesResolver} },
